@@ -1,10 +1,23 @@
 package com.example.RESTfulServices.controllers;
 
 
+import com.sun.xml.internal.ws.wsdl.writer.document.Message;
 import okhttp3.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -32,20 +45,23 @@ public class AirportController {
             .protocols(Arrays.asList(Protocol.H2_PRIOR_KNOWLEDGE)) //it's h2c
             .build();
 
+    RestTemplate http1Template = new RestTemplate(new OkHttp3ClientHttpRequestFactory(clientHTTP1));
+    RestTemplate http2Template = new RestTemplate(new OkHttp3ClientHttpRequestFactory(clientHTTP2));
+
 
     @RequestMapping(method = GET, produces = "application/json")
-    public String getAirports() throws IOException {
+    public ResponseEntity getAirports() throws IOException, URISyntaxException {
         controllerEnterPoint();
         System.out.println("\n ** You are in /airports endpoint ** ");
 
-        Request request = new Request.Builder()
+        /*Request request = new Request.Builder()
                 .url("http://localhost:9001/flights/api/v1/airports")
                 .get()
                 .build();
 
         Response response = clientHTTP2.newCall(request).execute();
 
-        System.out.println("Response headers: " + response.headers());
+        System.out.println("Response headers: " + response.headers());*/
 
 
         /**
@@ -59,20 +75,28 @@ public class AirportController {
          * So NO System.out.println("Response body: " + response.body().toString());  (or .string())
          *
          * */
-        return response.body().string();
+        //return response.body().string();
+        return http2Template.exchange(new URL("http://localhost:9001/flights/api/v1/airports").toURI(), HttpMethod.GET, null, String.class);
+
     }
 
 
-    /*@RequestMapping(value = "/{id}", method = GET)
-    public ResponseEntity getSomething(@PathVariable Long id) {
-        Something something = somethingService.getSomething(id);
-        if (something == null) {
-            return new ResponseEntity("No \"Something\" found to display for ID " + id, HttpStatus.NOT_FOUND);
+    @RequestMapping(value = "/{id}", method = GET)
+    public ResponseEntity getAirport(@PathVariable Long id) throws IOException, URISyntaxException {
+        controllerEnterPoint();
+        System.out.println("\n ** You are in /airports/" + id + " endpoint ** ");
+
+        ResponseEntity r = null;
+        try{
+            r = http2Template.exchange(new URL("http://localhost:9001/flights/api/v1/airports" + id).toURI(), HttpMethod.GET, null, String.class);
+        }catch (HttpClientErrorException e){
+
         }
-        return new ResponseEntity(something, HttpStatus.OK);
+        //return http2Template.exchange(new URL("http://localhost:9001/flights/api/v1/airports/" + id).toURI(), HttpMethod.GET, null, String.class);
+
     }
 
-    @RequestMapping(value = "/{id}", method = DELETE)
+    /*@RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity deleteSomething(@PathVariable Long id) {
         if (somethingService.deleteSomething(id) == null) {
             return new ResponseEntity("No \"Something\" found to delete for ID " + id, HttpStatus.NOT_FOUND);
