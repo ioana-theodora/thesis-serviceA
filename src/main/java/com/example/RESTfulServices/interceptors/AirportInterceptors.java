@@ -1,5 +1,8 @@
 package com.example.RESTfulServices.interceptors;
 
+import com.example.RESTfulServices.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,11 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 public class AirportInterceptors extends HandlerInterceptorAdapter {
 
     public int counter = 1;
+    private static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         long startTime = System.currentTimeMillis();
 
+        logger.info("");
         System.out.println("\n-------- AirportInterception.preHandle --- ");
         System.out.println("Request URL: " + request.getRequestURL());
         System.out.println("Start Time: " + System.currentTimeMillis());
