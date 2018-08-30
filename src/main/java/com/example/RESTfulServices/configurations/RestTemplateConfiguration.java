@@ -1,5 +1,6 @@
 package com.example.RESTfulServices.configurations;
 
+import com.example.RESTfulServices.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 
 @Configuration
-public class RestTemplateConfiguration {
+public class RestTemplateConfiguration extends Utils {
     OkHttpClient clientHTTP1 = new OkHttpClient.Builder()
             .protocols(Arrays.asList(Protocol.HTTP_1_1))
             .build();

@@ -1,11 +1,18 @@
 package com.example.RESTfulServices.interceptors;
 
 import com.example.RESTfulServices.Utils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.internal.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AirportInterceptors extends HandlerInterceptorAdapter {
 
@@ -16,7 +23,18 @@ public class AirportInterceptors extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         long startTime = System.currentTimeMillis();
 
+        Map<String, Object> map = new HashMap<>();
+        Enumeration headerNames = request.getHeaderNames();
+        map.put("*Request id", counter++);
+        while (headerNames.hasMoreElements()) {
+            String key = (String) headerNames.nextElement();
+            String value = request.getHeader(key);
+            map.put(key, value);
+        }
+        String jsonHeaders = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(map);
+
         logger.info("");
+        System.out.println(jsonHeaders);
 //        System.out.println("\n-------- AirportInterception.preHandle --- ");
 //        System.out.println("Request URL: " + request.getRequestURL());
 //        System.out.println("Start Time: " + System.currentTimeMillis());
