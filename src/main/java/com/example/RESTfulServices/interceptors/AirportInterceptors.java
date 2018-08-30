@@ -17,9 +17,9 @@ public class AirportInterceptors extends HandlerInterceptorAdapter {
         long startTime = System.currentTimeMillis();
 
         logger.info("");
-        System.out.println("\n-------- AirportInterception.preHandle --- ");
-        System.out.println("Request URL: " + request.getRequestURL());
-        System.out.println("Start Time: " + System.currentTimeMillis());
+//        System.out.println("\n-------- AirportInterception.preHandle --- ");
+//        System.out.println("Request URL: " + request.getRequestURL());
+//        System.out.println("Start Time: " + System.currentTimeMillis());
 
         request.setAttribute("startTime", startTime);
 
@@ -36,16 +36,16 @@ public class AirportInterceptors extends HandlerInterceptorAdapter {
 //        // and use that in the view page
 //    }
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        long startTime = (Long) request.getAttribute("startTime");
-        long endTime = System.currentTimeMillis();
-
-        System.out.println("\n-------- AirportInterception.afterCompletion --- ");
-        System.out.println("Request URL: " + request.getRequestURL());
-        System.out.println("End Time: " + endTime);
-        System.out.println("Time Taken: " + (endTime - startTime) + " ms");
-        System.out.println("Index: " + counter++);
-    }
+//    @Override
+//    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+//        long startTime = (Long) request.getAttribute("startTime");
+//        long endTime = System.currentTimeMillis();
+//
+//        System.out.println("\n-------- AirportInterception.afterCompletion --- ");
+//        System.out.println("Request URL: " + request.getRequestURL());
+//        System.out.println("End Time: " + endTime);
+//        System.out.println("Time Taken: " + (endTime - startTime) + " ms");
+//        System.out.println("Index: " + counter++);
+//    }
 
 }
