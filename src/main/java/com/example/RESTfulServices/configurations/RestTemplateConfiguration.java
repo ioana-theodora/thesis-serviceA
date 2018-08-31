@@ -28,6 +28,6 @@ public class RestTemplateConfiguration extends Utils {
 
     @Bean
     public RestTemplate getRestTemplate() {
-        return new RestTemplate(new OkHttp3ClientHttpRequestFactory(clientHTTP1));
+        return new RestTemplate(new OkHttp3ClientHttpRequestFactory(clientHTTP2));
     }
 }
