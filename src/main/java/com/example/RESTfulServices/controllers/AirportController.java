@@ -2,6 +2,7 @@ package com.example.RESTfulServices.controllers;
 
 
 import com.example.RESTfulServices.Utils;
+import io.swagger.annotations.ResponseHeader;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -33,8 +36,9 @@ public class AirportController{
 
 
     @RequestMapping(method = GET, produces = "application/json")
-    public ResponseEntity getAirports() throws IOException, URISyntaxException {
+    public ResponseEntity getAirports(HttpServletResponse response) throws IOException, URISyntaxException {
         controllerEnterPoint();
+        //response.getHeader("transfer-encoding").; //TODO Remove transfer-encoding header at response time => should not be stacked anymore?!
 
 
         System.out.println("\n ** You are in /airports endpoint ** ");
